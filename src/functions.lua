@@ -5,7 +5,7 @@ local Functions = {}
 
 function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
     local ArgumentTable = {}
-    for Index, ExpectedArgument in ExpectedArguments do
+    for Index, ExpectedArgument in ipairs( ExpectedArguments ) do
         local Argument = CommandArguments[Index]
         if not Argument then
             return false

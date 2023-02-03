@@ -59,6 +59,6 @@ end
 
 Players.PlayerAdded:Connect(OnPlayerAdded)
 Players.PlayerRemoving:Connect(OnPlayerRemoving)
-for _, Player in Players:GetPlayers() do
+for _, Player in ipairs( Players:GetPlayers() ) do
     task.spawn(OnPlayerAdded, Player)
 end
