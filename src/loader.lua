@@ -5,12 +5,14 @@ local RunService = game:GetService("RunService")
 
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local Prefix = "^"
-local Tables = {
+local Values = {
     Logs = {
         Chat = {},
         Command = {}
     },
-    CommandWhitelist = {LocalPlayer}
+    CommandWhitelist = {LocalPlayer},
+    LogCommands = true,
+    LogChat = false
 }
 
 local Commands = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/commands.lua") )()
@@ -39,8 +41,8 @@ local function ProcessCommand(Player, Message)
 end
 
 local function OnPlayerChatted(Player, Message)
-    if Message:sub(1, #Prefix) == Prefix and table.find(Tables.CommandWhitelist, Player) then
-        task.spawn(ProcessCommand, Player, Message:sub(#Prefix))
+    if Message:sub(1, #Prefix) == Prefix and table.find(Values.CommandWhitelist, Player) then
+        task.spawn(ProcessCommand, Player, Message:sub(#Prefix + 1))
     end
 end
 
@@ -51,10 +53,10 @@ local function OnPlayerAdded(Player)
 end
 
 local function OnPlayerRemoving(Player)
-    local Index = table.find(Tables.CommandWhitelist, Player)
+    local Index = table.find(Values.CommandWhitelist, Player)
     if not Index then return end
 
-    table.remove(Tables.CommandWhitelist, Index)
+    table.remove(Values.CommandWhitelist, Index)
 end
 
 Players.PlayerAdded:Connect(OnPlayerAdded)
