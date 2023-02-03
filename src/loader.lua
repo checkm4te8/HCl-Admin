@@ -23,7 +23,7 @@ local function ProcessCommand(Player, Message)
     local CommandName = table.remove(SplitMessage, 1):lower()
 
     local Command
-    for _, CommandInfo in Commands do
+    for _, CommandInfo in next, Commands do
         if CommandInfo.Name ~= CommandName and not table.find(CommandInfo.Aliases, CommandName) then continue end
         Command = CommandInfo
         break
@@ -61,6 +61,6 @@ end
 
 Players.PlayerAdded:Connect(OnPlayerAdded)
 Players.PlayerRemoving:Connect(OnPlayerRemoving)
-for _, Player in ipairs( Players:GetPlayers() ) do
+for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
