@@ -43,7 +43,7 @@ AddCommand("prefix", {"fullstring"}, {}):SetDescription("Sets the command prefix
     shared.HClAdmin.Values.Prefix = Prefix
 end)
 
-AddCommand("rejoin", {"boolean?"}, {"rj"}):SetDescription("Rejoins the game, if first argument is true automatically reloads the script"):SetCallback(function(_, Reload)
+AddCommand("rejoin", {"boolean?"}, {"rj"}):SetDescription("Rejoins the game, if first argument is true automatically loads the script"):SetCallback(function(_, Reload)
     local QueueOnTP = syn and syn.queue_on_teleport
     if QueueOnTP and Reload then
         QueueOnTP( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/hcl-admin.lua") )
