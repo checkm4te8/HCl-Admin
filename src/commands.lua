@@ -23,8 +23,12 @@ local function AddCommand(CommandName, CommandArguments, Aliases)
     return Command
 end
 
-AddCommand("test", {"fullstring"}, {"test2"}):SetDescription("Test Command"):SetCallback(function(Player, Message)
-    print(Message)
+AddCommand("antifling", {"boolean"}, {"nofling", "afling"}):SetDescription("Toggles the anti-fling"):SetCallback(function(_, Active)
+    shared.HClAdmin.Values.AntiFling = Active
+end)
+
+AddCommand("close", {}, {"closeadmin", "stop"}):SetDescription("Destroys all items associated with HCl Admin"):SetCallback(function()
+    shared.HClAdmin:Destroy()
 end)
 
 return Commands

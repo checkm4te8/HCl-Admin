@@ -63,4 +63,17 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
     return true, ArgumentTable
 end
 
+function Functions.IsCharacter(Inst)
+    local Humanoid = Inst:FindFirstChildOfClass("Humanoid")
+    local HumanoidRootPart = Inst:FindFirstChild("HumanoidRootPart")
+    return Humanoid ~= nil and HumanoidRootPart ~= nil
+end
+
+function Functions.ToggleCharCollisions(Character, CanCollide)
+    for _, Inst in next, Character:GetDescendants() do
+        if not Inst:IsA("BasePart") then continue end
+        Inst.CanCollide = CanCollide
+    end
+end
+
 return Functions
