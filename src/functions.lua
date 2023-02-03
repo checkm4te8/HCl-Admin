@@ -8,8 +8,14 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
     for Index, ExpectedArgument in next, ExpectedArguments do
         local Argument = CommandArguments[Index]
         if not Argument then
+            if ExpectedArgument:match("?$") ~= nil then
+                break
+            end
+
             return false
         end
+
+        ExpectedArgument = ExpectedArgument:gsub("?$", "")
 
         if ExpectedArgument == "players" then
             if Argument == "all" then

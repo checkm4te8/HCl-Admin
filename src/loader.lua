@@ -8,7 +8,6 @@ if shared.HClAdmin then
 end
 
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
-local Prefix = "^"
 local Connections = {}
 local Instances = {}
 local CharacterInfo = {}
@@ -20,7 +19,8 @@ local Values = {
     CommandWhitelist = {LocalPlayer},
     LogCommands = true,
     LogChat = false,
-    AntiFling = false
+    AntiFling = false,
+    Prefix = "^"
 }
 
 local Commands = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/commands.lua") )()
@@ -57,8 +57,8 @@ local function ProcessCommand(Player, Message)
 end
 
 local function OnPlayerChatted(Player, Message)
-    if Message:sub(1, #Prefix) == Prefix and table.find(Values.CommandWhitelist, Player) then
-        task.spawn(ProcessCommand, Player, Message:sub(#Prefix + 1))
+    if Message:sub(1, #Values.Prefix) == Values.Prefix and table.find(Values.CommandWhitelist, Player) then
+        task.spawn(ProcessCommand, Player, Message:sub(#Values.Prefix + 1))
     end
 end
 
