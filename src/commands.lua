@@ -1,17 +1,18 @@
 local Commands = {}
-local CommandMetatable = {__index = {}}
+local Index = {}
+local CommandMetatable = {__index = Index}
 
-function CommandMetatable.__index:SetCallback(Callback)
+function Index:SetCallback(Callback)
     self.Callback = Callback
     return self
 end
 
-function CommandMetatable.__index:SetDescription(Description)
+function Index:SetDescription(Description)
     self.Description = Description
     return self
 end
 
-local function AddCommand(CommandName: string, CommandArguments, Aliases)
+local function AddCommand(CommandName, CommandArguments, Aliases)
     local Command = setmetatable({}, CommandMetatable)
     Command.Name = CommandName
     Command.Arguments = CommandArguments
