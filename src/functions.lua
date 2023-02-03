@@ -3,7 +3,7 @@ local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
 local Functions = {}
 
-function Functions.ParseArguments(Player: Player, CommandArguments: {string}, ExpectedArguments: {string})
+function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
     local ArgumentTable = {}
     for Index, ExpectedArgument in ExpectedArguments do
         local Argument = CommandArguments[Index]

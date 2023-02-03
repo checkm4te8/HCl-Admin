@@ -16,7 +16,7 @@ local Tables = {
 local Commands = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/commands.lua") )()
 local Functions = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/functions.lua") )()
 
-local function ProcessCommand(Player: Player, Message: string)
+local function ProcessCommand(Player, Message)
     local SplitMessage = Message:split(" ")
     local CommandName = table.remove(SplitMessage, 1):lower()
 
@@ -38,19 +38,19 @@ local function ProcessCommand(Player: Player, Message: string)
     Callback(Player, unpack(Arguments))
 end
 
-local function OnPlayerChatted(Player: Player, Message: string)
+local function OnPlayerChatted(Player, Message)
     if Message:sub(1, #Prefix) == Prefix and table.find(Tables.CommandWhitelist, Player) then
         task.spawn(ProcessCommand, Player, Message:sub(#Prefix))
     end
 end
 
-local function OnPlayerAdded(Player: Player)
+local function OnPlayerAdded(Player)
     Player.Chatted:Connect(function(Message)
         OnPlayerChatted(Player, Message)
     end)
 end
 
-local function OnPlayerRemoving(Player: Player)
+local function OnPlayerRemoving(Player)
     local Index = table.find(Tables.CommandWhitelist, Player)
     if not Index then return end
 
