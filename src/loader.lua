@@ -121,6 +121,10 @@ local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
     
     if LastArgument then
         local ArgumentType = CommandInfo.Arguments[Index]
+        if ArgumentType then
+            ArgumentType = ArgumentType:gsub("?$", "")
+        end
+        
         if ArgumentType == "boolean" then
             local Strings = {"true", "false", "yes", "no", "on", "off"}
             for _, str in next, Strings do
@@ -143,7 +147,7 @@ local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
 
     local ArgumentsString = table.concat(ArgumentTable, " "):gsub(".", " ")
     if OriginalLastArg ~= LastArgument then
-        ArgumentsString ..= " " .. LastArgument
+        ArgumentsString ..= LastArgument
     end
 
     CommandAutoComplete.Text = NewText .. " " .. ArgumentsString
