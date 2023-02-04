@@ -185,15 +185,13 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceAncestryChanged(Child, NewParent)
-    if Values.AntiFling and Child:IsA("Tool") then
-        warn(Child)
-
-        local Handle = Child:WaitForChild("Handle", 3)
+local function WorkspaceDescendantAdded(Descendant)
+    if Values.AntiFling and Descendant:IsA("Tool") then
+        local Handle = Descendant:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("BasePart") then return end
 
         Handle.CanTouch = false
-        local TouchInterest = Child:WaitForChild("TouchInterest", 3)
+        local TouchInterest = Descendant:WaitForChild("TouchInterest", 3)
         if not TouchInterest then return end
 
         task.defer(TouchInterest.Destroy, TouchInterest)
@@ -207,7 +205,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, workspace.AncestryChanged:Connect(WorkspaceAncestryChanged))
+table.insert(Connections, workspace.DescendantAdded:Connect(WorkspaceDescendantAdded))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
@@ -223,7 +221,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.001d", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.001e", 255, 0, 0)
 end
 
 shared.HClAdmin = {
