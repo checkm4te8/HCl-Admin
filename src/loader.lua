@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local CoreGui = cloneref(game:GetService("CoreGui"))
 
 if shared.HClAdmin then
     shared.HClAdmin:Destroy()
@@ -23,8 +24,24 @@ local Values = {
     Prefix = "^"
 }
 
+local Assets = game:GetObjects("rbxassetid://12374697905")
 local Commands = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/commands.lua") )()
 local Functions = loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/functions.lua") )()
+
+local CommandGui = Assets[1]
+local CommandBar = CommandGui:WaitForChild("CommandBar")
+local CommandBox = CommandBar:WaitForChild("CommandBox"):: TextBox
+local CommandAutoComplete = CommandBar:WaitForChild("AutoComplete"):: TextLabel
+
+local ProtectGui = syn and syn.protect_gui
+if ProtectGui then
+    ProtectGui(CommandGui)
+    CommandGui.Parent = CoreGui
+elseif gethui and not KRNL_LOADED then
+    CommandBar.Parent = gethui()
+else
+    CommandBar.parent = CoreGui
+end
 
 local function ProcessCommand(Player, Message)
     local SplitMessage = Message:split(" ")
@@ -104,10 +121,40 @@ local function OnRenderStepped()
     
 end
 
+local function CommandBoxChanged(Property)
+    if Property ~= "Text" then return end
+    local CommandName = CommandBox.Text:split(" ")[1]:lower()
+
+    for _, CommandInfo in next, Commands do
+        if CommandInfo.Name:sub(1, #CommandName) == CommandName then
+            CommandAutoComplete.Text = (" "):rep(#CommandName) .. CommandInfo.Name:sub(#CommandName)
+            return
+        end
+
+        for _, Alias in next, CommandInfo.Aliases do
+            if Alias:sub(1, #CommandName) == CommandName then
+                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName)
+                return
+            end
+        end
+    end
+
+    CommandAutoComplete.Text = ""
+end
+
+local function CommandBoxFocusLost(EnterPressed)
+    if not EnterPressed then return end
+    
+    ProcessCommand(LocalPlayer, CommandBox.Text)
+end
+
+table.insert(Instances, CommandGui)
 table.insert(Connections, Players.PlayerAdded:Connect(OnPlayerAdded))
 table.insert(Connections, Players.PlayerRemoving:Connect(OnPlayerRemoving))
 table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
+table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
+table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
