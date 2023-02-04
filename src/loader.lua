@@ -191,15 +191,8 @@ local function WorkspaceDescendantAdded(Descendant)
         if not Handle or not Handle:IsA("BasePart") then return end
 
         Handle.CanTouch = false
-
-        local function OnChildAdded(child)
-            if not child:IsA("TouchTransmitter") then return end
-            task.defer(child.Destroy, child)
-        end
-
-        Handle.ChildAdded:Connect(OnChildAdded)
-        for _, ins in next, Handle:GetChildren() do
-            task.spawn(OnChildAdded, ins)
+        if Descendant.Parent == workspace then
+            Descendant:Destroy() -- i am done
         end
     end
 end
@@ -227,7 +220,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.002a", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.002c", 255, 0, 0)
 end
 
 shared.HClAdmin = {
