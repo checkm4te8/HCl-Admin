@@ -1,3 +1,6 @@
+if shared.AdminLoading then return end
+shared.AdminLoading = true
+
 local URL = "https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/loader.lua"
 
 local CodeString
@@ -8,4 +11,23 @@ else
 end
 
 if not CodeString then return end
-loadstring(CodeString)()
+local Function, Error = loadstring(CodeString)
+if not Function then
+    if printconsole then
+        printconsole("Unable to load HClAdmin! Error: " .. Error, 255, 0, 0)
+    else
+        warn("Unable to load HClAdmin! Error: " .. Error)
+    end
+
+    return
+end
+
+xpcall(Function, function(ErrMsg)
+    if printconsole then
+        printconsole("Unable to load HClAdmin! Error: " .. debug.traceback(Error), 255, 0, 0)
+    else
+        warn("Unable to load HClAdmin! Error: " .. debug.traceback(Error))
+    end
+end)
+
+shared.AdminLoading = false
