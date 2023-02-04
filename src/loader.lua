@@ -190,7 +190,7 @@ local function WorkspaceDescendantRemoving(Descendant)
         local CharacterHit = Descendant.Parent
         for _, ins in next, CharacterHit:GetChildren() do
             if ins:IsA("Tool") or ins:IsA("Accessory") then
-                task.defer(ins.Destroy, ins)
+                ins:Destroy()
             end
         end
     end
