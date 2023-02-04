@@ -75,4 +75,16 @@ AddCommand("reload", {}, {"restart"}):SetDescription("Reloads the admin script")
     loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/loader.lua") )()
 end)
 
+AddCommand("btools", {}, {"bt"}):SetDescription("Gives you client-sided BTools"):SetCallback(function(Player)
+    local Backpack = Player:FindFirstChild("Backpack")
+    if not Backpack then return end
+
+    for _, binType in next, Enum.BinType:GetEnumItems() do
+        if binType.Name == "Script" then continue end
+        local Bin = Instance.new("HopperBin")
+        Bin.BinType = binType
+        Bin.Parent = Backpack
+    end
+end)
+
 return Commands
