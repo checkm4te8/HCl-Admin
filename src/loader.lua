@@ -185,21 +185,22 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceAncestryChanged(Descendant)
-    warn("I AM ANCESTRY CHANGED HELP ME")
+local function DataModelDescendantAdded(Descendant)
     if Values.AntiFling and Descendant:IsA("Tool") then
-        warn(Descendant)
         local Handle = Descendant:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("BasePart") then return end
 
-        warn(Handle)
-
         Handle.CanTouch = false
-        local TouchInterest = Descendant:WaitForChild("TouchInterest", 3)
-        if not TouchInterest then return end
 
-        warn(TouchInterest)
-        TouchInterest:Destroy()
+        local function OnChildAdded(child)
+            if not child:IsA("TouchTransmitter") then return end
+            task.defer(child.Destroy, child)
+        end
+
+        Handle.ChildAdded:Connect(OnChildAdded)
+        for _, ins in next, Handle:GetChildren() do
+            task.spawn(OnChildAdded, ins)
+        end
     end
 end
 
@@ -210,7 +211,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, workspace.AncestryChanged:Connect(WorkspaceAncestryChanged))
+table.insert(Connections, game.DescendantAdded:Connect(DataModelDescendantAdded))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
