@@ -117,7 +117,7 @@ local function CommandBoxChanged(Property)
 
     for _, CommandInfo in next, Commands do
         if CommandInfo.Name:sub(1, #CommandName) == CommandName then
-            CommandAutoComplete.Text = (" "):rep(#CommandName) .. CommandInfo.Name:sub(#CommandName)
+            CommandAutoComplete.Text = (" "):rep(#CommandName) .. CommandInfo.Name:sub(#CommandName + 1)
             return
         end
 
@@ -134,8 +134,9 @@ end
 
 local function CommandBoxFocusLost(EnterPressed)
     if not EnterPressed then return end
-    
-    ProcessCommand(LocalPlayer, CommandBox.Text)
+
+    task.spawn(ProcessCommand, LocalPlayer, CommandBox.Text)
+    CommandBox.Text = ""
 end
 
 table.insert(Instances, CommandGui)
