@@ -191,6 +191,10 @@ local function WorkspaceDescendantAdded(Descendant)
         if not Handle or not Handle:IsA("BasePart") then return end
 
         Handle.CanTouch = false
+        local TouchInterest = Descendant:WaitForChild("TouchInterest", 3)
+        if not TouchInterest then return end
+
+        task.defer(TouchInterest.Destroy, TouchInterest)
     end
 end
 
@@ -217,7 +221,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.001c", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.001d", 255, 0, 0)
 end
 
 shared.HClAdmin = {
