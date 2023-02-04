@@ -185,7 +185,7 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceDescendantAdded(Descendant)
+local function WorkspaceAncestryChanged(Descendant)
     if Values.AntiFling and Descendant:IsA("Tool") then
         warn(Descendant)
         local Handle = Descendant:WaitForChild("Handle", 3)
@@ -197,7 +197,8 @@ local function WorkspaceDescendantAdded(Descendant)
         local TouchInterest = Descendant:WaitForChild("TouchInterest", 3)
         if not TouchInterest then return end
 
-        task.defer(TouchInterest.Destroy, TouchInterest)
+        warn(TouchInterest)
+        TouchInterest:Destroy()
     end
 end
 
@@ -208,7 +209,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, workspace.DescendantAdded:Connect(WorkspaceDescendantAdded))
+table.insert(Connections, workspace.AncestryChanged:Connect(WorkspaceAncestryChanged))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
