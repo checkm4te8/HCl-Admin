@@ -30,8 +30,8 @@ local Functions = loadstring( game:HttpGet("https://raw.githubusercontent.com/wa
 
 local CommandGui = Assets[1]
 local CommandBar = CommandGui:WaitForChild("CommandBar")
-local CommandBox = CommandBar:WaitForChild("CommandBox"):: TextBox
-local CommandAutoComplete = CommandBar:WaitForChild("AutoComplete"):: TextLabel
+local CommandBox = CommandBar:WaitForChild("CommandBox")
+local CommandAutoComplete = CommandBar:WaitForChild("AutoComplete")
 
 local ProtectGui = syn and syn.protect_gui
 if ProtectGui then
