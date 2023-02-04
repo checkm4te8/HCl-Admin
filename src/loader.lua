@@ -101,7 +101,7 @@ local function OnStepped()
     local Character = CharacterInfo.Character
     if Values.AntiFling and Character and Character.Parent then
         for _, Char in next, Character.Parent:GetChildren() do
-            if not Functions.IsCharacter(Char) then continue end
+            if Char == Character or not Functions.IsCharacter(Char) then continue end
             Functions.ToggleCharCollisions(Char, false)
         end
     end
@@ -157,6 +157,10 @@ elseif gethui and not KRNL_LOADED then
     CommandBar.Parent = gethui()
 else
     CommandBar.Parent = CoreGui
+end
+
+if printconsole then
+    printconsole("Loaded HClAdmin", 255, 0, 0)
 end
 
 shared.HClAdmin = {
