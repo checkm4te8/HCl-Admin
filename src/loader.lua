@@ -187,6 +187,7 @@ end
 
 local function WorkspaceDescendantAdded(Descendant)
     if Values.AntiFling and Descendant:IsA("TouchTransmitter") then
+        warn("HOW ABOUT YOU KILL YOURSELF HUH?", Descendant, Descendant.Parent)
         local Part = Descendant.Parent
         if Part:IsA("BasePart") then
             Part.CanTouch = false
