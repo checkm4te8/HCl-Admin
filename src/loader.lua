@@ -185,10 +185,10 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceDescendantAdded(Child)
-    if Values.AntiFling and Child:IsA("Tool") then
-        local Handle = Child:WaitForChild("Handle", 3)
-        if not Handle or not Handle:IsA("Tool") then return end
+local function WorkspaceDescendantAdded(Descendant)
+    if Values.AntiFling and Descendant:IsA("Tool") then
+        local Handle = Descendant:WaitForChild("Handle", 3)
+        if not Handle or not Handle:IsA("BasePart") then return end
 
         Handle.CanTouch = false
     end
