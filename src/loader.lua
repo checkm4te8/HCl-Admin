@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local CoreGui = cloneref(game:GetService("CoreGui"))
+local CoreGui = game:GetService("CoreGui")
 
 if shared.HClAdmin then
     shared.HClAdmin:Destroy()
@@ -123,7 +123,7 @@ local function CommandBoxChanged(Property)
 
         for _, Alias in next, CommandInfo.Aliases do
             if Alias:sub(1, #CommandName) == CommandName then
-                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName)
+                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName - 1)
                 return
             end
         end
