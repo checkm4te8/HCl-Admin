@@ -186,14 +186,13 @@ local function CommandBoxFocusLost(EnterPressed)
 end
 
 local function WorkspaceDescendantAdded(Descendant)
-    if Values.AntiFling and Descendant:IsA("Tool") then
-        local Handle = Descendant:WaitForChild("Handle", 3)
-        if not Handle or not Handle:IsA("BasePart") then return end
-
-        Handle.CanTouch = false
-        if Descendant.Parent == workspace then
-            Descendant:Destroy() -- i am done
+    if Values.AntiFling and Descendant:IsA("TouchTransmitter") then
+        local Part = Descendant.Parent
+        if Part:IsA("BasePart") then
+            Part.CanTouch = false
         end
+
+        task.defer(Descendant.Destroy, Descendant)
     end
 end
 
@@ -220,7 +219,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.002c", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.002b", 255, 0, 0)
 end
 
 shared.HClAdmin = {
