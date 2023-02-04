@@ -33,16 +33,6 @@ local CommandBar = CommandGui:WaitForChild("CommandBar")
 local CommandBox = CommandBar:WaitForChild("CommandBox")
 local CommandAutoComplete = CommandBar:WaitForChild("AutoComplete")
 
-local ProtectGui = syn and syn.protect_gui
-if ProtectGui then
-    ProtectGui(CommandGui)
-    CommandGui.Parent = CoreGui
-elseif gethui and not KRNL_LOADED then
-    CommandBar.Parent = gethui()
-else
-    CommandBar.parent = CoreGui
-end
-
 local function ProcessCommand(Player, Message)
     local SplitMessage = Message:split(" ")
     local CommandName = table.remove(SplitMessage, 1):lower()
@@ -157,6 +147,16 @@ table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
+end
+
+local ProtectGui = syn and syn.protect_gui
+if ProtectGui then
+    ProtectGui(CommandGui)
+    CommandGui.Parent = CoreGui
+elseif gethui and not KRNL_LOADED then
+    CommandBar.Parent = gethui()
+else
+    CommandBar.Parent = CoreGui
 end
 
 shared.HClAdmin = {
