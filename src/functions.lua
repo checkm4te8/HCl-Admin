@@ -37,7 +37,7 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
             local PlayerNames = Argument:split(",")
             for _, PlayerName in next, PlayerNames do
                 PlayerName = PlayerName:gsub("%W", ""):lower()
-                for _, TPlayer in Players:GetPlayers() do
+                for _, TPlayer in next, Players:GetPlayers() do
                     if TPlayer.Name:lower():sub(1, #PlayerName) ~= PlayerName then continue end
                     table.insert(PlayerTable, TPlayer)
                 end
