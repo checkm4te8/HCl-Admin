@@ -185,15 +185,9 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceDescendantAdded(Descendant)
-    if Values.AntiFling and Descendant:IsA("TouchTransmitter") then
-        warn("HOW ABOUT YOU KILL YOURSELF HUH?", Descendant, Descendant.Parent)
-        local Part = Descendant.Parent
-        if Part:IsA("BasePart") then
-            Part.CanTouch = false
-        end
-
-        task.defer(Descendant.Destroy, Descendant)
+local function WorkspaceChildAdded(Child)
+    if Values.AntiFling and (Child:IsA("Accessory") or Child:IsA("Tool")) then
+        task.defer(Child.Destroy, Child)
     end
 end
 
@@ -204,7 +198,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, workspace.DescendantAdded:Connect(WorkspaceDescendantAdded))
+table.insert(Connections, workspace.ChildAdded:Connect(WorkspaceChildAdded))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
@@ -220,7 +214,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.002d", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.002c", 255, 0, 0)
 end
 
 shared.HClAdmin = {
