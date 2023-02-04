@@ -43,6 +43,10 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
                 end
             end
 
+            if #PlayerTable == 0 then
+                return false
+            end
+            
             table.insert(ArgumentTable, PlayerTable)
         elseif ExpectedArgument == "string" then
             table.insert(ArgumentTable, Argument)

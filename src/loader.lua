@@ -8,7 +8,9 @@ if shared.HClAdmin then
     shared.HClAdmin:Destroy()
 end
 
+local CurrentCamera = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
+
 local Connections = {}
 local Instances = {}
 local CharacterInfo = {}
@@ -21,6 +23,7 @@ local Values = {
     LogCommands = true,
     LogChat = false,
     AntiFling = false,
+    ViewTarget = nil,
     Prefix = "^"
 }
 
@@ -108,7 +111,23 @@ local function OnStepped()
 end
 
 local function OnRenderStepped()
-    
+    local ViewTarget = Values.ViewTarget
+    if ViewTarget then
+        local ViewCharacter = ViewTarget.Character
+        if ViewTarget.Parent ~= Players then
+            Values.ViewTarget = nil
+            CurrentCamera.CameraSubject = CharacterInfo.Humanoid
+            return
+        end
+
+        local ViewHumanoid = ViewCharacter and ViewCharacter:FindFirstChildOfClass("Humanoid")
+        if not ViewHumanoid then
+            CurrentCamera.CameraSubject = CharacterInfo.Humanoid
+            return
+        end
+
+        CurrentCamera.CameraSubject = ViewHumanoid
+    end
 end
 
 local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
@@ -118,7 +137,7 @@ local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
     local Index = #ArgumentTable
     local LastArgument = table.remove(ArgumentTable, Index)
     local OriginalLastArg = LastArgument
-    
+
     if LastArgument then
         local ArgumentType = CommandInfo.Arguments[Index]
         if ArgumentType then
@@ -196,6 +215,10 @@ local function WorkspaceDescendantRemoving(Descendant)
     end
 end
 
+local function CameraChanged()
+    CurrentCamera = workspace.CurrentCamera
+end
+
 table.insert(Instances, CommandGui)
 table.insert(Connections, Players.PlayerAdded:Connect(OnPlayerAdded))
 table.insert(Connections, Players.PlayerRemoving:Connect(OnPlayerRemoving))
@@ -204,6 +227,7 @@ table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
 table.insert(Connections, workspace.DescendantRemoving:Connect(WorkspaceDescendantRemoving))
+table.insert(Connections, workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(CameraChanged))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end

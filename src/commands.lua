@@ -75,6 +75,15 @@ AddCommand("reload", {}, {"restart"}):SetDescription("Reloads the admin script")
     loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/loader.lua") )()
 end)
 
+AddCommand("view", {"player"}, {"spectate"}):SetDescription("Views the target player"):SetCallback(function(_, PlayerList)
+    local Player = PlayerList[1]
+    shared.HClAdmin.Values.ViewTarget = Player
+end)
+
+AddCommand("unview", {}, {"unspectate"}):SetDescription("Stops viewing the target player"):SetCallback(function()
+    shared.HClAdmin.Values.ViewTarget = nil
+end)
+
 AddCommand("btools", {}, {"bt"}):SetDescription("Gives you client-sided BTools"):SetCallback(function(Player)
     local Backpack = Player:FindFirstChild("Backpack")
     if not Backpack then return end
