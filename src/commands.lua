@@ -43,7 +43,7 @@ AddCommand("prefix", {"fullstring"}, {}):SetDescription("Sets the command prefix
     shared.HClAdmin.Values.Prefix = Prefix
 end)
 
-AddCommand("whitelist", {"player"}, {"wl"}):SetDescription("Allows players to run commands"):SetCallback(function(_, PlayerList)
+AddCommand("whitelist", {"players"}, {"wl"}):SetDescription("Allows players to run commands"):SetCallback(function(_, PlayerList)
     for _, Player in next, PlayerList do
         local Index =  table.find(shared.HClAdmin.CommandWhitelist, Player)
         if not Index then continue end
@@ -51,7 +51,7 @@ AddCommand("whitelist", {"player"}, {"wl"}):SetDescription("Allows players to ru
     end
 end)
 
-AddCommand("unwhitelist", {"player"}, {"unwl"}):SetDescription("Disallows players to run commands"):SetCallback(function(_, PlayerList)
+AddCommand("unwhitelist", {"players"}, {"unwl"}):SetDescription("Disallows players to run commands"):SetCallback(function(_, PlayerList)
     for _, Player in next, PlayerList do
         if table.find(shared.HClAdmin.CommandWhitelist) then continue end
         table.insert(shared.HClAdmin.CommandWhitelist, Player)
@@ -75,7 +75,7 @@ AddCommand("reload", {}, {"restart"}):SetDescription("Reloads the admin script")
     loadstring( game:HttpGet("https://raw.githubusercontent.com/wait-what314/HCl-Admin/main/src/loader.lua") )()
 end)
 
-AddCommand("view", {"player"}, {"spectate"}):SetDescription("Views the target player"):SetCallback(function(_, PlayerList)
+AddCommand("view", {"players"}, {"spectate"}):SetDescription("Views the target player"):SetCallback(function(_, PlayerList)
     local Player = PlayerList[1]
     shared.HClAdmin.Values.ViewTarget = Player
 end)
