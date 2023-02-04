@@ -35,7 +35,7 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
 
             local PlayerTable = {}
             local PlayerNames = Argument:split(",")
-            for _, PlayerName in PlayerNames do
+            for _, PlayerName in next, PlayerNames do
                 PlayerName = PlayerName:gsub("%W", ""):lower()
                 for _, TPlayer in Players:GetPlayers() do
                     if TPlayer.Name:lower():sub(1, #PlayerName) ~= PlayerName then continue end
@@ -46,7 +46,7 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
             if #PlayerTable == 0 then
                 return false
             end
-            
+
             table.insert(ArgumentTable, PlayerTable)
         elseif ExpectedArgument == "string" then
             table.insert(ArgumentTable, Argument)
