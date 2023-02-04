@@ -113,6 +113,11 @@ end
 
 local function CommandBoxChanged(Property)
     if Property ~= "Text" then return end
+    if not CommandBox.Text:match("%w") then
+        CommandAutoComplete.Text = ""
+        return
+    end
+
     local CommandName = CommandBox.Text:split(" ")[1]:lower()
 
     for _, CommandInfo in next, Commands do
