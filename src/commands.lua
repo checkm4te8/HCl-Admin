@@ -2,15 +2,15 @@ local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 
 local Commands = {}
-local Index = {}
-local CommandMetatable = {__index = Index}
+local __Index = {}
+local CommandMetatable = {__index = __Index}
 
-function Index:SetCallback(Callback)
+function __Index:SetCallback(Callback)
     self.Callback = Callback
     return self
 end
 
-function Index:SetDescription(Description)
+function __Index:SetDescription(Description)
     self.Description = Description
     return self
 end
@@ -41,6 +41,21 @@ end)
 AddCommand("prefix", {"fullstring"}, {}):SetDescription("Sets the command prefix"):SetCallback(function(_, Prefix)
     if utf8.len(Prefix) > 2 then return end
     shared.HClAdmin.Values.Prefix = Prefix
+end)
+
+AddCommand("whitelist", {"player"}, {"wl"}):SetDescription("Allows players to run commands"):SetCallback(function(_, PlayerList)
+    for _, Player in next, PlayerList do
+        local Index =  table.find(shared.HClAdmin.CommandWhitelist, Player)
+        if not Index then continue end
+        table.remove(shared.HClAdmin.CommandWhitelist, Index)
+    end
+end)
+
+AddCommand("unwhitelist", {"player"}, {"unwl"}):SetDescription("Disallows players to run commands"):SetCallback(function(_, PlayerList)
+    for _, Player in next, PlayerList do
+        if table.find(shared.HClAdmin.CommandWhitelist) then continue end
+        table.insert(shared.HClAdmin.CommandWhitelist, Player)
+    end
 end)
 
 AddCommand("rejoin", {"boolean?"}, {"rj"}):SetDescription("Rejoins the game, if first argument is true automatically loads the script"):SetCallback(function(_, Reload)
