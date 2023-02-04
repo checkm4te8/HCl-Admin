@@ -123,7 +123,7 @@ local function CommandBoxChanged(Property)
 
         for _, Alias in next, CommandInfo.Aliases do
             if Alias:sub(1, #CommandName) == CommandName then
-                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName - 1)
+                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName + 1)
                 return
             end
         end
