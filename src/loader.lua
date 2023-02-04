@@ -186,6 +186,7 @@ local function CommandBoxFocusLost(EnterPressed)
 end
 
 local function WorkspaceAncestryChanged(Descendant)
+    warn("I AM ANCESTRY CHANGED HELP ME")
     if Values.AntiFling and Descendant:IsA("Tool") then
         warn(Descendant)
         local Handle = Descendant:WaitForChild("Handle", 3)
@@ -225,7 +226,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.001f", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.002a", 255, 0, 0)
 end
 
 shared.HClAdmin = {
