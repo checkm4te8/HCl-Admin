@@ -185,7 +185,7 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function DataModelDescendantAdded(Descendant)
+local function WorkspaceDescendantAdded(Descendant)
     if Values.AntiFling and Descendant:IsA("Tool") then
         local Handle = Descendant:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("BasePart") then return end
@@ -211,7 +211,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, game.DescendantAdded:Connect(DataModelDescendantAdded))
+table.insert(Connections, workspace.DescendantAdded:Connect(WorkspaceDescendantAdded))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
