@@ -185,7 +185,7 @@ local function CommandBoxFocusLost(EnterPressed)
     CommandBox.Text = ""
 end
 
-local function WorkspaceChildAdded(Child)
+local function WorkspaceDescendantAdded(Child)
     if Values.AntiFling and Child:IsA("Tool") then
         local Handle = Child:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("Tool") then return end
@@ -201,7 +201,7 @@ table.insert(Connections, RunService.Stepped:Connect(OnStepped))
 table.insert(Connections, RunService.RenderStepped:Connect(OnRenderStepped))
 table.insert(Connections, CommandBox.Changed:Connect(CommandBoxChanged))
 table.insert(Connections, CommandBox.FocusLost:Connect(CommandBoxFocusLost))
-table.insert(Connections, workspace.ChildAdded:Connect(WorkspaceChildAdded))
+table.insert(Connections, workspace.DescendantAdded:Connect(WorkspaceDescendantAdded))
 for _, Player in next, Players:GetPlayers() do
     task.spawn(OnPlayerAdded, Player)
 end
@@ -217,7 +217,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.001a", 255, 0, 0)
 end
 
 shared.HClAdmin = {
