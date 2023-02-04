@@ -187,8 +187,11 @@ end
 
 local function WorkspaceDescendantAdded(Descendant)
     if Values.AntiFling and Descendant:IsA("Tool") then
+        warn(Descendant)
         local Handle = Descendant:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("BasePart") then return end
+
+        warn(Handle)
 
         Handle.CanTouch = false
         local TouchInterest = Descendant:WaitForChild("TouchInterest", 3)
