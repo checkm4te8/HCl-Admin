@@ -187,10 +187,10 @@ end
 
 local function WorkspaceAncestryChanged(Child, NewParent)
     if Values.AntiFling and Child:IsA("Tool") then
+        warn(Child)
+
         local Handle = Child:WaitForChild("Handle", 3)
         if not Handle or not Handle:IsA("BasePart") then return end
-
-        warn(Child, Handle)
 
         Handle.CanTouch = false
         local TouchInterest = Child:WaitForChild("TouchInterest", 3)
