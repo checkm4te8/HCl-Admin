@@ -221,7 +221,7 @@ else
 end
 
 if printconsole then
-    printconsole("Loaded HClAdmin v1.001e", 255, 0, 0)
+    printconsole("Loaded HClAdmin v1.001f", 255, 0, 0)
 end
 
 shared.HClAdmin = {
