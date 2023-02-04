@@ -124,7 +124,7 @@ local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
         if ArgumentType then
             ArgumentType = ArgumentType:gsub("?$", "")
         end
-        
+
         if ArgumentType == "boolean" then
             local Strings = {"true", "false", "yes", "no", "on", "off"}
             for _, str in next, Strings do
