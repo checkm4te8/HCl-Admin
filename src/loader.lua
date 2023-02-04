@@ -111,6 +111,44 @@ local function OnRenderStepped()
     
 end
 
+local function HandleAutoComplete(CommandInfo, RealName, CommandName, Arguments)
+    local NewText = (" "):rep(#CommandName) .. RealName:sub(#CommandName + 1)
+    local ArgumentTable = table.clone(Arguments)
+
+    local Index = #ArgumentTable
+    local LastArgument = table.remove(ArgumentTable, Index)
+    local OriginalLastArg = LastArgument
+    
+    if LastArgument then
+        local ArgumentType = CommandInfo.Arguments[Index]
+        if ArgumentType == "boolean" then
+            local Strings = {"true", "false", "yes", "no", "on", "off"}
+            for _, str in next, Strings do
+                local MatchedStr = Functions.MatchStringFromStart(str, LastArgument)
+                if not MatchedStr then continue end
+
+                LastArgument = MatchedStr
+                break
+            end
+        elseif ArgumentType == "player" then
+            for _, Player in next, Players:GetPlayers() do
+                local MatchedStr = Functions.MatchStringFromStart(Player.Name, LastArgument)
+                if not MatchedStr then continue end
+
+                LastArgument = MatchedStr
+                break
+            end
+        end
+    end
+
+    local ArgumentsString = table.concat(ArgumentTable, " "):gsub(".", " ")
+    if OriginalLastArg ~= LastArgument then
+        ArgumentsString ..= " " .. LastArgument
+    end
+
+    CommandAutoComplete.Text = NewText .. " " .. ArgumentsString
+end
+
 local function CommandBoxChanged(Property)
     if Property ~= "Text" then return end
     if not CommandBox.Text:match("%w") then
@@ -118,19 +156,18 @@ local function CommandBoxChanged(Property)
         return
     end
 
-    local CommandName = CommandBox.Text:split(" ")[1]:lower()
+    local TextSplit = CommandBox.Text:split(" ")
+    local CommandName = table.remove(TextSplit, 1):lower()
 
     for _, CommandInfo in next, Commands do
         if CommandInfo.Name:sub(1, #CommandName) == CommandName then
-            CommandAutoComplete.Text = (" "):rep(#CommandName) .. CommandInfo.Name:sub(#CommandName + 1)
-            return
+            return HandleAutoComplete(CommandInfo, CommandInfo.Name, CommandName, TextSplit)
         end
 
         for _, Alias in next, CommandInfo.Aliases do
-            if Alias:sub(1, #CommandName) == CommandName then
-                CommandAutoComplete.Text = (" "):rep(#CommandName) .. Alias:sub(#CommandName + 1)
-                return
-            end
+            if Alias:sub(1, #CommandName) ~= CommandName then continue end
+
+            return HandleAutoComplete(CommandInfo, Alias, CommandName, TextSplit)
         end
     end
 

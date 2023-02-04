@@ -1,6 +1,4 @@
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
-
 local Functions = {}
 
 function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
@@ -23,7 +21,7 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
                 continue
             elseif Argument == "others" then
                 local PlayerTable = Players:GetPlayers()
-                local MyIndex = table.find(PlayerTable, LocalPlayer)
+                local MyIndex = table.find(PlayerTable, Player)
                 if MyIndex then
                     table.remove(PlayerTable, MyIndex)
                 end
@@ -31,7 +29,7 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
                 table.insert(ArgumentTable, PlayerTable)
                 continue
             elseif Argument == "me" then
-                table.insert(ArgumentTable, {LocalPlayer})
+                table.insert(ArgumentTable, {Player})
                 continue
             end
 
@@ -67,6 +65,12 @@ function Functions.ParseArguments(Player, CommandArguments, ExpectedArguments)
     end
 
     return true, ArgumentTable
+end
+
+function Functions.MatchStringFromStart(String, Matched)
+    if String:lower():sub(1, #Matched) == Matched:lower() then
+        return (" "):rep(#Matched) .. String:sub(#Matched + 1)
+    end
 end
 
 function Functions.IsCharacter(Inst)
